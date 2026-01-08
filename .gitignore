@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env / Conda
+.env
+venv/
+env/
+.conda/
+miniconda3/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PDFs / images / temp files
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Model files
+*.pt
+*.pth
+*.ckpt
+
+# Secrets
+.env
+*.key
+*.pem
+
+# Docker
+*.tar
+
+# Cache
+.cache/

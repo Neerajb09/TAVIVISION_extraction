@@ -1,0 +1,19 @@
+
+version: '3.8'
+
+services:
+  cardiovision:
+    build:
+      context: .  # Use parent directory as the build context
+      dockerfile: Dockerfile
+    image: tavivision
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./TAVIVision:/app
+    tty: true
+    stdin_open: true
+    restart: unless-stopped  # Ensures the container restarts if it crashes
+    env_file: DoCker/.env
+    command: >
+          conda run -n neeraj python3 endpoint.py

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Start the model serving process
+conda run -n neeraj python3 endpoint.py
