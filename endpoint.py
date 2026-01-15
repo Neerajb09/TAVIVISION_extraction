@@ -154,6 +154,6 @@ def fetch_report():
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
     multiprocessing.set_start_method('spawn', force=True)
-    app.run(host='0.0.0.0', port=8081, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
 
 

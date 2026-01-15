@@ -45,10 +45,12 @@ VOLUME ["/cardiovision/data"]
 SHELL ["conda", "run", "-n", "neeraj", "/bin/bash", "-c"]
 
 # Expose the required port
-EXPOSE 8282
+EXPOSE 8080
 
 # Default command when the container starts
 # CMD ["/cardiovision/phase1/serve"]
+CMD ["bash", "/usr/local/bin/serve"]
+
 
 
 
