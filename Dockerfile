@@ -49,7 +49,7 @@ EXPOSE 8080
 
 # Default command when the container starts
 # CMD ["/cardiovision/phase1/serve"]
-CMD ["bash", "/usr/local/bin/serve"]
+# CMD ["bash", "/usr/local/bin/serve"]
 
 
 
