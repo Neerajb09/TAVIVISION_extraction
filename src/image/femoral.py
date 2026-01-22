@@ -15,13 +15,14 @@ from pathlib import Path
 # print ("Parent Dir:", parent_dir)
 # sys.path.insert(0, str(project_root))
 from ..upload.s3 import S3Uploader
+from .fineTuneImage import ImageProcessor
 # import cloudinary
 # import cloudinary.uploader
 # import cloudinary.api
 
 
 class Femoral:
-    def __init__(self, pdf_url=None, pdf_path=None, regex_patterns=[r'(?i)femoral'], crop_height=850, x_padding_left=175,x_padding_right=200,upload_to_s3=True,
+    def __init__(self, pdf_url=None, pdf_path=None, regex_patterns=[r'(?i)\bfemoral\b[\s\-:\/,_]*\boverview\b'], crop_height=1500, x_padding_left=50,x_padding_right=50,upload_to_s3=True,
                  highlighted_pdf_path='femoral_highlighted_pdf.pdf', output_image_path='output_image_femoral.png', temp_image_path='temp_femoral_image.png'):
         """
         Initialize the class with the required parameters and start processing.
@@ -156,6 +157,11 @@ class Femoral:
             self.detect_highlight_and_crop(self.temp_image_path)
             if(self.temp_image_path):
                 os.remove(self.temp_image_path)
+            if(self.output_image_path):
+                ImageProcessor().crop_center_contour(
+                    image_path=self.output_image_path,
+                    output_path=self.output_image_path
+                )
 
 
     def upload_to_S3(self):
@@ -172,15 +178,11 @@ class Femoral:
 # Usage Example
 if __name__ == "__main__":
 
-    pdf_path = '/nuvodata/User_data/ad95150/phase1/cardiovisionPhase1/trial_report.pdf'
-    regex_patterns = [r'(?i)femoral']
+    pdf_url = 'https://tavivision.s3.ap-south-1.amazonaws.com/pdfs/Bicuspid1a+report_ECG_PS49SE014_Landmark_Corelab+1.pdf'
+    
 
     processor = Femoral(
-        pdf_path=pdf_path,
-        regex_patterns=regex_patterns,
-        crop_height=850, 
-        x_padding_left=175,
-        x_padding_right=200,
+        pdf_url=pdf_url,
         highlighted_pdf_path='femoral_highlighted_pdf.pdf',
         output_image_path='femoral_output_image.png'
     )

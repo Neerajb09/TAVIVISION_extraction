@@ -6,11 +6,12 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 
 
-dotenv_path = "DoCker/.env"
-load_dotenv(dotenv_path=dotenv_path)
+# dotenv_path = "DoCker/.env"
+load_dotenv()
 
 # Configure AWS credentials and S3 bucket
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID_TV")
+print(AWS_ACCESS_KEY)
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY_TV")
 S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_TV")
 AWS_REGION = os.getenv("AWS_S3_REGION_TV", "ap-south-1")
@@ -58,6 +59,6 @@ class S3Uploader:
             print(f"Error uploading file to S3: {e}")
             return None
 
-# # Example usage
-# a = S3Uploader(s3_folder= 'TAVIVision/calcificaltion_image',file_path="/mnt/nvme_disk2/User_data/nb57077k/cardiovision/phase1/output_highlighted_t.pdf", content_type='image/png')
-# print(a.file_url)
+# Example usage
+a = S3Uploader(s3_folder= 'TAVIVision/calcificaltion_image',file_path="/mnt/nvme_disk2/User_data/nb57077k/cardiovision/phase1/output_highlighted_t.pdf", content_type='image/png')
+print(a.file_url)

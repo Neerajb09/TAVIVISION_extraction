@@ -10,6 +10,7 @@ from src.image.fineTuneImage import ImageProcessor
 from src.upload.s3 import S3Uploader
 import uuid
 from src.image.femoral import Femoral
+from src.myvalsizing import AorticStenosisValues
 import torch
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
@@ -166,16 +167,19 @@ def fetch_report():
     data = request.json['report']
     # print(data)
     evaluator = ConditionEvaluator(data)
+    print(evaluator)
+    aortic=AorticStenosisValues(data).calculate_all()
     results_table = evaluator.generate_results_table()
 
     # Convert DataFrame to a list of dictionaries
     # results_json = results_table.to_dict(orient='records')
-    return jsonify({"results": results_table})
+    return jsonify({"results": results_table,
+                    "myvalsize": aortic})
 
 
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
     multiprocessing.set_start_method('spawn', force=True)
-    app.run(host='0.0.0.0', port=80801, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=8280, debug=True, threaded=True)
 
 

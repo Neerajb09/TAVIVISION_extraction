@@ -28,6 +28,12 @@ class ConditionEvaluator:
         self.ICD8mm = self._safe_float(input_data.get("icd8mm"))
         self.VTCR = self._safe_float(input_data.get("vtcR"))
         self.VTCL = self._safe_float(input_data.get("vtcL"))
+        self.ciaLeftDia = self._safe_float(input_data.get("ciaLeftDiameter"))
+        self.ciaRightDia = self._safe_float(input_data.get("ciaRightDiameter"))
+        self.eiaLeftDia = self._safe_float(input_data.get("eiaLeftDiameter"))
+        self.eiaRightDia = self._safe_float(input_data.get("eiaRightDiameter"))
+        self.faLeftDiameter = self._safe_float(input_data.get("faLeftDiameter"))
+        self.faRightDiameter = self._safe_float(input_data.get("faRightDiameter"))
         
 
     def _safe_float(self, value, default=0.0):
@@ -136,7 +142,7 @@ class ConditionEvaluator:
             return ["Attention Required", None, ((self.Asc_Aorta - threshold) / threshold) * 100, "40 mm"]
 
     def evaluate_VTC(self, vtc):
-        if vtc is None or vtc is 0.0:
+        if vtc == None or vtc == 0.0:
             return ["Not Eligible", None, None, None]
         threshold = 4.0
         # print(threshold)
@@ -144,6 +150,14 @@ class ConditionEvaluator:
             return ["Favourable", ((vtc - threshold) / threshold) * 100, None, str(round(threshold,2))+' mm']
         else:
             return ["Attention Required", None, ((threshold - vtc) / threshold) * 100, str(round(threshold,2))+' mm']
+        
+    def evaluate_femoral(self, value):
+        if value == None:
+            return ["Not Eligible", None, None, None]
+        if value >= 6:
+            return ["Favourable", (value - 6) * 6, None, '6 mm']
+        else:
+            return ["Attention Required", None, (6 - value) * 6, '6 mm']
             
         
     def evaluate_all(self):
@@ -164,7 +178,12 @@ class ConditionEvaluator:
             "calciumScore": self.evaluate_Calcium(),
             "vtcL": self.evaluate_VTC(self.VTCL),
             "vtcR": self.evaluate_VTC(self.VTCR),
-            
+            "ciaLeftDiameter": self.evaluate_femoral(self.ciaLeftDia),
+            "ciaRightDiameter": self.evaluate_femoral(self.ciaRightDia),
+            "eiaLeftDiameter": self.evaluate_femoral(self.eiaLeftDia),
+            "eiaRightDiameter": self.evaluate_femoral(self.eiaRightDia),
+            "faLeftDiameter": self.evaluate_femoral(self.faLeftDiameter),
+            "faRightDiameter": self.evaluate_femoral(self.faRightDiameter)
         }
 
     def generate_results_table(self):
@@ -186,26 +205,32 @@ class ConditionEvaluator:
         # return pd.DataFrame(data)
 
 # Example Usage
-# input_values = {
-#     "stjDiameter": 36.0,
-#     "sovHeight": 16,
-#     "annulusDiameter": 26.1,
-#     "sovLeftDiameter": 30,
-#     "sovRightDiameter": 33.1,
-#     "sovNonDiameter": 32,
-#     "rcaHeight": 17.8,
-#     "lcaHeight": 21.6,
-#     "lvotDiameter": 25.1,
-#     "aorticValveAnatomyType": "Bicuspid Type 1a",
-#     "calciumScore": 1449,
-#     "icd4mm" : 27,
-#     "icd6mm" : 29.5,
-#     "icd8mm" : 31,
-#     "ascAortaDiameter" : 43,
-#     # "vtcL": 5,
-#     # "vtcR": 6
-# }
+if __name__ == "__main__":
+    input_values = {"annulusDiameter":"23.2",
+                    "aorticValveAnatomy":"bicuspid",
+                    "stjDiameter":"25.6",
+                    "sovLeftDiameter":"27.2",
+                    "sovRightDiameter":"29.0",
+                    "sovNonDiameter":"29.5",
+                    "rcaHeight":"15.0",
+                    "lcaHeight":"11.1",
+                    "lvotDiameter":"24.1",
+                    "aorticValveAnatomyType":"Bicuspid Type 0",
+                    "calciumScore":"371",
+                    "ascAortaDiameter":"29.2",
+                    "icd4mm":"26.1",
+                    "icd6mm":"26.3",
+                    "icd8mm":"26.0",
+                    "sovDiameter": 25.0,
+                    "annulusArea":"423",
+                    "vtcL":5, "vtcR": 6, 
+                    "ciaLefDiameter":"7", 
+                    "ciaRightDiameter":"6",
+                    "eiaLeftDiameter":"5",
+                    "eiaRightDiameter":"8",
+                    "faLeftDiameter":"6",
+                    "faRightDiameter":"6.5"}
 
-# evaluator = ConditionEvaluator(input_values)
-# results_table = evaluator.generate_results_table()
-# print(results_table)
+    evaluator = ConditionEvaluator(input_values)
+    results_table = evaluator.generate_results_table()
+    print(results_table)
