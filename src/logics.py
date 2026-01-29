@@ -48,6 +48,8 @@ class ConditionEvaluator:
             float: The converted float value or the default value.
         """
         try:
+            if value == '' or value is None:
+                return None
             return float(value)
         except (TypeError, ValueError):
             return default
@@ -218,7 +220,7 @@ if __name__ == "__main__":
                     "aorticValveAnatomyType":"Bicuspid Type 0",
                     "calciumScore":"371",
                     "ascAortaDiameter":"29.2",
-                    "icd4mm":"26.1",
+                    "icd4mm":"",
                     "icd6mm":"26.3",
                     "icd8mm":"26.0",
                     "sovDiameter": 25.0,

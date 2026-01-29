@@ -60,5 +60,5 @@ class S3Uploader:
             return None
 
 # Example usage
-a = S3Uploader(s3_folder= 'TAVIVision/calcificaltion_image',file_path="/mnt/nvme_disk2/User_data/nb57077k/cardiovision/phase1/output_highlighted_t.pdf", content_type='image/png')
-print(a.file_url)
+# a = S3Uploader(s3_folder= 'TAVIVision/calcificaltion_image',file_path="/mnt/nvme_disk2/User_data/nb57077k/cardiovision/phase1/output_highlighted_t.pdf", content_type='image/png')
+# print(a.file_url)

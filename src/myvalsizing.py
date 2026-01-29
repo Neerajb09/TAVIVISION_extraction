@@ -2,12 +2,12 @@ import math
 
 class AorticStenosisValues:
     def __init__(self, input_data):
-        self.annulus_area = float(input_data.get("annulusArea"))
+        self.annulus_area = self._safe_float(input_data.get("annulusArea"))
         self.anatomy = input_data.get("aorticValveAnatomyType").lower()
         self.calcium_score = int(input_data.get("calciumScore"))
-        self.icd4mm = float(input_data.get("icd4mm"))
-        self.icd6mm = float(input_data.get("icd6mm"))
-        self.icd8mm = float(input_data.get("icd8mm"))
+        self.icd4mm = self._safe_float(input_data.get("icd4mm"))
+        self.icd6mm = self._safe_float(input_data.get("icd6mm"))
+        self.icd8mm = self._safe_float(input_data.get("icd8mm"))
 
         # Validate annulus area
         if not (270.0 <= self.annulus_area <= 840.0):
@@ -30,6 +30,24 @@ class AorticStenosisValues:
             self.bicuspid_type = None
         else:
             raise ValueError("Anatomy must include 'bicuspid' or 'tricuspid'.")
+        
+    def _safe_float(self, value, default=0.0):
+        """
+        Safely converts a value to float. Returns a default value if the input is None or invalid.
+
+        Parameters:
+            value: The value to convert.
+            default: The default value to return if conversion fails.
+
+        Returns:
+            float: The converted float value or the default value.
+        """
+        try:
+            if value == '' or value is None:
+                return 0
+            return float(value)
+        except (TypeError, ValueError):
+            return default
 
     def calculate_oversize_value(self):
         if self.anatomy_type == "tricuspid":
@@ -171,7 +189,7 @@ class AorticStenosisValues:
             "description": result["description"],
         }
 
-# Example usage
-if __name__ == "__main__":
-    aortic = AorticStenosisValues(500, "Tricuspid", 600, 0, 0, 0)
-    print(aortic.calculate_all())
+# # Example usage
+# if __name__ == "__main__":
+#     aortic = AorticStenosisValues(500, "Tricuspid", 600, 0, 0, 0)
+#     print(aortic.calculate_all())
