@@ -8,7 +8,7 @@ AWS_REGION="ap-south-1"
 
 ENDPOINT_NAME="tavivision-endpoint-v2-1"
 ENDPOINT_CONFIG_NAME="tavivision-endpoint-v2-1-config-night"
-# MODEL_NAME="tavivision-model-v2-1"
+MODEL_NAME="tavivision-model-v2-1"
 ECR_REPO_NAME="tavi-extraction"
 
 # =========================
@@ -68,9 +68,9 @@ delete_ecr_repo() {
 # EXECUTION ORDER (IMPORTANT)
 # =========================
 
-# delete_endpoint
+delete_endpoint
 delete_endpoint_config
-# delete_model
+delete_model
 delete_ecr_repo
 
 echo "========================================"

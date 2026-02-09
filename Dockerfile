@@ -26,7 +26,8 @@ RUN conda env create --name neeraj --file conda-requirements.txt
 RUN conda run -n neeraj pip install --no-cache-dir -r pip-requirements.txt
 
 COPY requirement/requirement.txt .
-RUN conda run -n neeraj pip install -r requirement.txt
+RUN conda run -n neeraj pip install -r requirement.txt gunicorn
+
 
 
 
@@ -45,11 +46,12 @@ VOLUME ["/cardiovision/data"]
 SHELL ["conda", "run", "-n", "neeraj", "/bin/bash", "-c"]
 
 # Expose the required port
-EXPOSE 8283
+EXPOSE 8183
 
 # Default command when the container starts
 # CMD ["/cardiovision/phase1/serve"]
 CMD ["bash", "/usr/local/bin/serve"]
+
 
 
 

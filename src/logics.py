@@ -157,9 +157,18 @@ class ConditionEvaluator:
         if value == None:
             return ["Not Eligible", None, None, None]
         if value >= 6:
-            return ["Favourable", (value - 6) * 6, None, '6 mm']
+            return ["Favourable", ((value - 6) / 6)*100, None, '6 mm']
         else:
-            return ["Attention Required", None, (6 - value) * 6, '6 mm']
+            return ["Attention Required", None, ((6 - value) / 6)*100, '6 mm']
+        
+    def evaluate_sovHeight(self, value):
+        if value == None or self.RCA == None or self.LCA == None:
+            return ["Not Eligible", None, None, None]
+        min_value = min(self.RCA,self.LCA) 
+        if value >= min_value:
+            return ["Favourable", ((value - min_value) / min_value)*100, None, str(round(min_value,2))+'mm']
+        else:
+            ["Attention Required", None, ((min_value - value) / min_value)*100, str(round(min_value,2))+'mm']
             
         
     def evaluate_all(self):
@@ -169,6 +178,7 @@ class ConditionEvaluator:
             "sovLeftDiameter": self.evaluate_SOV(self.SOV_left),
             "sovNonDiameter": self.evaluate_SOV(self.SOV_non),
             "sovDiameter": self.evaluate_SOV(self.SOV_Dia),
+            "sovHeight": self.evaluate_sovHeight(self.SOV_Height),
             "icd4mm": self.evaluate_ICD(self.ICD4mm),
             "icd6mm": self.evaluate_ICD(self.ICD6mm),
             "icd8mm": self.evaluate_ICD(self.ICD8mm),

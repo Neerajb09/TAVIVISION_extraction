@@ -15,7 +15,7 @@ import torch
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"  
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"  
 
 
 app = Flask(__name__)
@@ -126,17 +126,26 @@ def extract_pdf():
                 icd_tasks = [
                     ('icd4mm', [r'ICD @4mm', r'Inter commisural distance @4mm', r'ICD @ 4mm',r'ICD\s*4\s*mm',r"(?i)(?<![A-Za-z])((?:ICD|Inter[\s-]?commiss?ural[\s-]?distance)){e<=1}\s*[:@-]?\s*4(?:[.,]\d+)?\s*mm(?![A-Za-z])"], 'icd4mm'),
                     ('icd6mm', [r'ICD @6mm', r'Inter commisural distance @6mm', r'ICD @ 6mm',r'ICD\s*6\s*mm',r"(?i)(?<![A-Za-z])((?:ICD|Inter[\s-]?commiss?ural[\s-]?distance)){e<=1}\s*[:@-]?\s*6(?:[.,]\d+)?\s*mm(?![A-Za-z])"], 'icd6mm'),
-                    ('icd8mm', [r'ICD @8mm', r'Inter commisural distance @8mm', r'ICD @ 8mm',r'ICD\s*8\s*mm',r"(?i)(?<![A-Za-z])((?:ICD|Inter[\s-]?commiss?ural[\s-]?distance)){e<=1}\s*[:@-]?\s*8(?:[.,]\d+)?\s*mm(?![A-Za-z])"], 'icd8mm')
+                    ('icd8mm', [r'ICD @8mm', r'Inter commisural distance @8mm', r'ICD @ 8mm',r'ICD\s*8\s*mm',r"(?i)(?<![A-Za-z])((?:ICD|Inter[\s-]?commiss?ural[\s-]?distance)){e<=1}\s*[:@-]?\s*8(?:[.,]\d+)?\s*mm(?![A-Za-z])"], 'icd8mm'),
+                    ('stj_annulus_heights',[r'(?i)stj[\s-]*annulus[\s-]*height[s]?',r'(?i)sov[\s&-]*stj[\s-]*height[s]?',r'(?i)coronary[\s-]*height[s]?'],"stj_annulus_heights")
                 ]
 
-                with ThreadPoolExecutor(max_workers=3) as executor:
+                with ThreadPoolExecutor(max_workers=4) as executor:
                     futures = [executor.submit(process_icd, *task) for task in icd_tasks]
 
                     for future in futures:
                         result = future.result()
                         if result:
                             icd_values.update(result)
+            else:
+                icd_tasks = [('stj_annulus_heights',[r'(?i)stj[\s-]*annulus[\s-]*height[s]?',r'(?i)sov[\s&-]*stj[\s-]*height[s]?',r'(?i)coronary[\s-]*height[s]?'],"stj_annulus_heights")]
+                with ThreadPoolExecutor(max_workers=4) as executor:
+                    futures = [executor.submit(process_icd, *task) for task in icd_tasks]
 
+                    for future in futures:
+                        result = future.result()
+                        if result:
+                            icd_values.update(result)
 
 
         icd_values['aorticValveCalcificationImage'] = extracted_values.get('aorticValveCalcificationImage')
@@ -180,6 +189,6 @@ def fetch_report():
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
     multiprocessing.set_start_method('spawn', force=True)
-    app.run(host='0.0.0.0', port=8283, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=8183, debug=True, threaded=True)
 
 
