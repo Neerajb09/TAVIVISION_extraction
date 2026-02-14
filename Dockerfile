@@ -11,7 +11,7 @@ COPY requirement/pip-requirements.txt .
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -46,7 +46,7 @@ VOLUME ["/cardiovision/data"]
 SHELL ["conda", "run", "-n", "neeraj", "/bin/bash", "-c"]
 
 # Expose the required port
-EXPOSE 8183
+EXPOSE 8000
 
 # Default command when the container starts
 # CMD ["/cardiovision/phase1/serve"]

@@ -168,7 +168,7 @@ class ConditionEvaluator:
         if value >= min_value:
             return ["Favourable", ((value - min_value) / min_value)*100, None, str(round(min_value,2))+'mm']
         else:
-            ["Attention Required", None, ((min_value - value) / min_value)*100, str(round(min_value,2))+'mm']
+            return ["Attention Required", None, ((min_value - value) / min_value)*100, str(round(min_value,2))+'mm']
             
         
     def evaluate_all(self):

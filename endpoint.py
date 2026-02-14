@@ -154,7 +154,8 @@ def extract_pdf():
         femoral_values['femoral_url'] = Femoral(
             pdf_url=pdf_url,
             highlighted_pdf_path=f'{unique_id}_femoral_highlighted_pdf.pdf',
-            output_image_path=f'{unique_id}_femoral_output_image.png'
+            output_image_path=f'{unique_id}_femoral_output_image.png',
+            temp_image_path = f'{unique_id}_femoral_temp_image.png'
         ).image_url
         
 
@@ -189,6 +190,6 @@ def fetch_report():
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
     multiprocessing.set_start_method('spawn', force=True)
-    app.run(host='0.0.0.0', port=8183, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
 
 
