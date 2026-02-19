@@ -50,7 +50,8 @@ EXPOSE 8000
 
 # Default command when the container starts
 # CMD ["/cardiovision/phase1/serve"]
-CMD ["bash", "/usr/local/bin/serve"]
+CMD gunicorn -w 1 --threads 4 endpoint:app --bind 0.0.0.0:8000
+# CMD ["bash", "/usr/local/bin/serve"]
 
 
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
 # Start the model serving process
-conda run -n neeraj python3 endpoint.py
+# conda run -n neeraj python3 endpoint.py
+gunicorn -w 1 --threads 4 endpoint:app --bind 0.0.0.0:8000
+
+
 
